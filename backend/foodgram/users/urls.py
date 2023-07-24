@@ -3,7 +3,6 @@ from rest_framework.routers import DefaultRouter
 
 from users.views import UserViewSet
 
-
 app_name = 'api'
 
 router = DefaultRouter()

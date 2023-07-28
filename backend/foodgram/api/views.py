@@ -7,13 +7,13 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
-from api.filters import IngredientSearchFilter
+from api.filters import IngredientSearchFilter, AuthorAndTagFilter
 from api.models import (Cart, Favorite, Ingredient, IngredientAmount, Recipe,
                         Tag)
 from api.pagination import CustomPageNumberPagination
 from api.permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
 from api.serializers import (IngredientSerializer, RecipeSerializer,
-                             TagSerializer)
+                             TagSerializer, SmallRecipeSerializer)
 
 
 class TagsViewSet(ReadOnlyModelViewSet):
@@ -34,7 +34,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     pagination_class = CustomPageNumberPagination
-    # filter_class = SomeFilter
+    filter_class = AuthorAndTagFilter
     permission_classes = [IsOwnerOrReadOnly, ]
 
     def perform_create(self, serializer):
@@ -59,7 +59,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         return None
 
     @action(detail=False, methods=['get'],
-            permission_classes=[IsAuthenticated])
+            permission_classes=[IsAuthenticated, ])
     def download_shopping_cart(self, request):
         final_list = {}
         ingredients = IngredientAmount.objects.filter(
@@ -83,8 +83,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
         page.drawString(200, 800, 'Список ингредиентов')
         page.setFont('Helvetica', size=16)
         height = 750
-        for i, (name, data) in enumerate(final_list.items(), 1):
-            page.drawString(75, height, (f'<{i}> {name} - {data["amount"]}, '
+        for item, (name, data) in enumerate(final_list.items(), 1):
+            page.drawString(75, height, (f'<{item}> {name} - {data["amount"]}, '
                                          f'{data["measurement_unit"]}'))
             height -= 25
         page.showPage()
@@ -98,8 +98,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
             }, status=status.HTTP_400_BAD_REQUEST)
         recipe = get_object_or_404(Recipe, id=pk)
         model.objects.create(user=user, recipe=recipe)
-        # serializer = SomeSerializer(recipe)
-        # return Response(serializer.data, status=status.HTTP_201_CREATED)
+        serializer = SmallRecipeSerializer(recipe)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def delete_obj(self, model, user, pk):
         obj = model.objects.filter(user=user, recipe__id=pk)

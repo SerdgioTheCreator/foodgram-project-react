@@ -95,3 +95,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MAX_LENGTH = 200
 
 MAX_LENGTH_COLOR = 7
+
+MIN_VALUE = 1
+
+PAGE_NUMBER = 6
+
+ZERO = 0

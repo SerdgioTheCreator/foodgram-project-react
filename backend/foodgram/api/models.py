@@ -2,7 +2,6 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core import validators
 from django.db import models
-
 User = get_user_model()
 
 
@@ -103,7 +102,8 @@ class Recipe(models.Model):
     cooking_time = models.PositiveSmallIntegerField(
         validators=(
             validators.MinValueValidator(
-                1, message='Минимальное время приготовления: 1 минута'
+                settings.MIN_VALUE,
+                message='Минимальное время приготовления: 1 минута'
             ),
         ),
         verbose_name='Время приготовления')
@@ -131,7 +131,8 @@ class IngredientAmount(models.Model):
     amount = models.PositiveSmallIntegerField(
         validators=(
             validators.MinValueValidator(
-                1, message='Минимальное количество ингридиентов: 1'
+                settings.MIN_VALUE,
+                message='Минимальное количество ингридиентов: 1'
             ),
         ),
         verbose_name='Количество',

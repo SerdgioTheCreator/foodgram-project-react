@@ -8,8 +8,8 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from api.filters import IngredientSearchFilter, AuthorAndTagFilter
-from api.models import (Cart, Favorite, Ingredient, IngredientAmount, Recipe,
-                        Tag)
+from recipes.models import (Cart, Favorite, Ingredient, IngredientAmount,
+                            Recipe, Tag)
 from api.pagination import CustomPageNumberPagination
 from api.permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
 from api.serializers import (IngredientSerializer, RecipeSerializer,

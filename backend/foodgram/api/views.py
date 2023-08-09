@@ -1,5 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
@@ -7,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
-from api.filters import IngredientSearchFilter, AuthorAndTagFilter
+from api.filters import IngredientSearchFilter, RecipeFilter
 from recipes.models import (Cart, Favorite, Ingredient, IngredientAmount,
                             Recipe, Tag)
 from api.pagination import CustomPageNumberPagination
@@ -34,32 +36,32 @@ class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     pagination_class = CustomPageNumberPagination
-    filter_class = AuthorAndTagFilter
+    filterset_class = RecipeFilter
     permission_classes = [IsOwnerOrReadOnly, ]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
-    @action(detail=True, methods=['get', 'delete'],
-            permission_classes=[IsAuthenticated, ])
+    @action(detail=True, methods=['post', 'delete'],
+            permission_classes=[IsAuthenticated])
     def favorite(self, request, pk=None):
-        if request.method == 'GET':
+        if request.method == 'POST':
             return self.add_obj(Favorite, request.user, pk)
         elif request.method == 'DELETE':
             return self.delete_obj(Favorite, request.user, pk)
         return None
 
-    @action(detail=True, methods=['get', 'delete'],
-            permission_classes=[IsAuthenticated, ])
+    @action(detail=True, methods=['post', 'delete'],
+            permission_classes=[IsAuthenticated])
     def shopping_cart(self, request, pk=None):
-        if request.method == 'GET':
+        if request.method == 'POST':
             return self.add_obj(Cart, request.user, pk)
         elif request.method == 'DELETE':
             return self.delete_obj(Cart, request.user, pk)
         return None
 
     @action(detail=False, methods=['get'],
-            permission_classes=[IsAuthenticated, ])
+            permission_classes=[IsAuthenticated])
     def download_shopping_cart(self, request):
         final_list = {}
         ingredients = IngredientAmount.objects.filter(
@@ -75,16 +77,18 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 }
             else:
                 final_list[name]['amount'] += item[2]
+        pdfmetrics.registerFont(
+            TTFont('Helvetica', 'Helvetica.ttf', 'UTF-8'))
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = (
             'attachment; filename="shopping_list.pdf"')
         page = canvas.Canvas(response)
         page.setFont('Helvetica', size=24)
-        page.drawString(200, 800, 'Список ингредиентов')
+        page.drawString(180, 800, 'Список ингредиентов')
         page.setFont('Helvetica', size=16)
         height = 750
-        for item, (name, data) in enumerate(final_list.items(), 1):
-            page.drawString(75, height, (f'<{item}> {name} - {data["amount"]}, '
+        for number, (name, data) in enumerate(final_list.items(), 1):
+            page.drawString(75, height, (f'{number}) {name} - {data["amount"]} '
                                          f'{data["measurement_unit"]}'))
             height -= 25
         page.showPage()

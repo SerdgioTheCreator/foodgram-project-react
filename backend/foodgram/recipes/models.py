@@ -85,7 +85,7 @@ class Recipe(models.Model):
         verbose_name='Теги'
     )
     image = models.ImageField(
-        upload_to='recipes/',
+        upload_to='recipes/images/',
         verbose_name='Изображение'
     )
     text = models.CharField(
@@ -152,12 +152,13 @@ class Favorite(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
+        related_name='favorite_user',
         verbose_name='Пользователь'
     )
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
-        related_name='favorites',
+        related_name='favorite_recipe',
         verbose_name='Рецепт'
     )
 

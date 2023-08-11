@@ -1,5 +1,12 @@
+from api.filters import IngredientSearchFilter, RecipeFilter
+from api.pagination import CustomPageNumberPagination
+from api.permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
+from api.serializers import (IngredientSerializer, RecipeSerializer,
+                             SmallRecipeSerializer, TagSerializer)
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from recipes.models import (Cart, Favorite, Ingredient, IngredientAmount,
+                            Recipe, Tag)
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
@@ -8,14 +15,6 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
-
-from api.filters import IngredientSearchFilter, RecipeFilter
-from recipes.models import (Cart, Favorite, Ingredient, IngredientAmount,
-                            Recipe, Tag)
-from api.pagination import CustomPageNumberPagination
-from api.permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
-from api.serializers import (IngredientSerializer, RecipeSerializer,
-                             TagSerializer, SmallRecipeSerializer)
 
 
 class TagsViewSet(ReadOnlyModelViewSet):
@@ -88,8 +87,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
         page.setFont('Helvetica', size=16)
         height = 750
         for number, (name, data) in enumerate(final_list.items(), 1):
-            page.drawString(75, height, (f'{number}) {name} - {data["amount"]} '
-                                         f'{data["measurement_unit"]}'))
+            page.drawString(75, height, (
+                f'{number}) {name} - {data["amount"]} '
+                f'{data["measurement_unit"]}'
+            ))
             height -= 25
         page.showPage()
         page.save()

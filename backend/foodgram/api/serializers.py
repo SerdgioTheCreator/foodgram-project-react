@@ -30,7 +30,7 @@ class CustomUserSerializer(UserSerializer):
                 and Follow.objects.filter(
                     user=request.user, author=obj.id
                 ).exists()
-        )
+                )
 
 
 class GetFollowSerializer(CustomUserSerializer):

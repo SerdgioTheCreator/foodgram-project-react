@@ -25,9 +25,12 @@ class CustomUserSerializer(UserSerializer):
 
     def get_is_subscribed(self, obj):
         request = self.context.get('request')
-        return (request and
-                request.user.is_authenticated and
-                Follow.objects.filter(user=request.user, author=obj.id).exists())
+        return (request
+                and request.user.is_authenticated
+                and Follow.objects.filter(
+                    user=request.user, author=obj.id
+                ).exists()
+        )
 
 
 class GetFollowSerializer(CustomUserSerializer):
@@ -149,11 +152,15 @@ class GetRecipeSerializer(serializers.ModelSerializer):
 
     def get_is_favorited(self, obj):
         request = self.context.get('request')
-        return request and request.user.is_authenticated and obj.favorite.exists()
+        return (request
+                and request.user.is_authenticated
+                and obj.favorite.exists())
 
     def get_is_in_shopping_cart(self, obj):
         request = self.context.get('request')
-        return request and request.user.is_authenticated and obj.cart.exists()
+        return (request
+                and request.user.is_authenticated
+                and obj.cart.exists())
 
 
 class PostIngredientSerializer(serializers.ModelSerializer):
@@ -174,7 +181,9 @@ class PostRecipeSerializer(serializers.ModelSerializer):
     )
     ingredients = PostIngredientSerializer(many=True,
                                            source='recipeingredient')
-    cooking_time = serializers.IntegerField(min_value=MIN_VALUE, max_value=MAX_VALUE)
+    cooking_time = serializers.IntegerField(
+        min_value=MIN_VALUE, max_value=MAX_VALUE
+    )
 
     class Meta:
         model = Recipe
@@ -184,7 +193,8 @@ class PostRecipeSerializer(serializers.ModelSerializer):
     def validate_ingredients(data):
         if not data:
             raise serializers.ValidationError({
-                'ingredients': 'В рецепте должен быть как минимум 1 ингредиент'
+                'ingredients': 'В рецепте должен быть как '
+                               'минимум 1 ингредиент'
             })
         ingredients = [ingredient['id'] for ingredient in data]
         if len(ingredients) != len(set(ingredients)):

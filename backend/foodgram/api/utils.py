@@ -12,7 +12,7 @@ def pdf_download(request, final_list):
         'attachment; filename="shopping_list.pdf"')
     page = canvas.Canvas(response)
     page.setFont('Helvetica', size=20)
-    page.drawString(180, 800, f'Список ингредиентов для ')
+    page.drawString(180, 800, 'Список ингредиентов для ')
     page.drawString(160, 775, f'пользователя {request.user.get_full_name()}')
     page.setFont('Helvetica', size=16)
     height = 700

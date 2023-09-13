@@ -45,7 +45,9 @@ class RecipeAdmin(admin.ModelAdmin):
 
     @admin.display(description='Ингредиенты')
     def show_ingredients(self, obj):
-        return ', '.join([str(ingredient) for ingredient in obj.ingredients.all()])
+        return ', '.join(
+            [str(ingredient) for ingredient in obj.ingredients.all()]
+        )
 
 
 admin.site.register(Cart)

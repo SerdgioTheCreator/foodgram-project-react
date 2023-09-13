@@ -13,10 +13,12 @@ class Command(BaseCommand):
     help = 'Загрузка ингредиентов и тегов из папки data в формате json'
 
     def add_arguments(self, parser):
-        parser.add_argument('ingredients', default='ingredients.json', nargs='?',
-                            type=str)
-        parser.add_argument('tags', default='tags.json', nargs='?',
-                            type=str)
+        parser.add_argument(
+            'ingredients', default='ingredients.json', nargs='?', type=str
+        )
+        parser.add_argument(
+            'tags', default='tags.json', nargs='?', type=str
+        )
 
     def handle(self, *args, **options):
         with open(os.path.join(DATA_ROOT, options['ingredients']), 'r',

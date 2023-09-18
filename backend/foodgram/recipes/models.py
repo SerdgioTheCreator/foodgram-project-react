@@ -2,8 +2,8 @@ from colorfield.fields import ColorField
 from django.core import validators
 from django.db import models
 
-from api.constants import (BLUE, GREEN, MAX_INGREDIENTS_VALUE,
-                           MAX_LENGTH, MAX_LENGTH_COLOR, MAX_VALUE,
+from api.constants import (BLUE, GREEN, MAX_COOKING_TIME,
+                           MAX_INGREDIENTS_VALUE, MAX_LENGTH, MAX_LENGTH_COLOR,
                            MIN_VALUE, ORANGE, PURPLE, YELLOW)
 from users.models import User
 
@@ -46,7 +46,7 @@ class Tag(models.Model):
         verbose_name='Название'
     )
     color = ColorField(
-        format="hex",
+        format='hex',
         samples=COLOR_CHOICES,
         max_length=MAX_LENGTH_COLOR,
         unique=True,
@@ -59,7 +59,7 @@ class Tag(models.Model):
     )
 
     class Meta:
-        ordering = ('-id', )
+        ordering = ('name', )
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
 
@@ -103,14 +103,18 @@ class Recipe(models.Model):
                 message='Минимальное время приготовления: 1 минута'
             ),
             validators.MaxValueValidator(
-                MAX_VALUE,
-                message='Максимальное время приготовления: 180 минут'
+                MAX_COOKING_TIME,
+                message='Максимальное время приготовления: 10000 минут'
             ),
         ),
         verbose_name='Время приготовления')
+    pub_date = models.DateTimeField(
+        verbose_name='Дата публикации',
+        auto_now_add=True
+    )
 
     class Meta:
-        ordering = ('-id', )
+        ordering = ('-pub_date', )
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
 
@@ -154,7 +158,7 @@ class IngredientAmount(models.Model):
         ]
 
 
-class AbstractFavoriteCartModel(models.Model):
+class AbstractUserRecipeModel(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -177,17 +181,17 @@ class AbstractFavoriteCartModel(models.Model):
         ]
 
 
-class Favorite(AbstractFavoriteCartModel):
+class Favorite(AbstractUserRecipeModel):
 
-    class Meta(AbstractFavoriteCartModel.Meta):
+    class Meta(AbstractUserRecipeModel.Meta):
         default_related_name = 'favorite'
         verbose_name = 'Избранное'
         verbose_name_plural = 'Избранные'
 
 
-class Cart(AbstractFavoriteCartModel):
+class Cart(AbstractUserRecipeModel):
 
-    class Meta(AbstractFavoriteCartModel.Meta):
+    class Meta(AbstractUserRecipeModel.Meta):
         default_related_name = 'cart'
         verbose_name = 'Корзина'
         verbose_name_plural = 'Корзины'

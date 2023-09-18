@@ -1,15 +1,13 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
+from api.constants import MIN_VALUE
 from .models import Cart, Favorite, Ingredient, Recipe, Tag
-
-
-class TagInline(admin.TabularInline):
-    model = Recipe.tags.through
 
 
 class IngredientInline(admin.TabularInline):
     model = Recipe.ingredients.through
+    min_num = MIN_VALUE
 
 
 @admin.register(Tag)
@@ -30,12 +28,9 @@ class RecipeAdmin(admin.ModelAdmin):
         'show_image', 'count_favorites'
     )
     list_filter = ('id', 'author', 'name', 'tags', )
-    inlines = (
-        TagInline,
-        IngredientInline,
-    )
+    inlines = (IngredientInline, )
 
-    @admin.display(description='Количество добавлений в избранное')
+    @admin.display(description='В избранном')
     def count_favorites(self, obj):
         return obj.favorite.count()
 

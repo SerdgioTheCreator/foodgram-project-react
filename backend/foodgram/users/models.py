@@ -12,14 +12,14 @@ class User(AbstractUser):
         help_text=('Обязательно для заполнения. Не более 150 символов.'
                    'Только буквы, цифры и @/./+/-/_'),
         validators=(UnicodeUsernameValidator(), ),
-        error_messages={'unique': "Это имя пользователя занято"},
+        error_messages={'unique': 'Это имя пользователя занято'},
         verbose_name='Уникальный юзернейм'
     )
     email = models.EmailField(
         max_length=EMAIL_MAXLENGTH,
         unique=True,
         error_messages={
-            'unique': "Этот адрес электронной почты уже зарегистрирован"
+            'unique': 'Этот адрес электронной почты уже зарегистрирован'
         },
         blank=True,
         verbose_name='Адрес электронной почты'
@@ -28,7 +28,7 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ('username', 'first_name', 'last_name', )
 
     class Meta:
-        ordering = ('-id', )
+        ordering = ('username', )
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
 
@@ -59,10 +59,10 @@ class Follow(models.Model):
                 name='unique_follow',
             ),
             models.CheckConstraint(
-                name="%(app_label)s_%(class)s_prevent_self_follow",
-                check=~models.Q(user=models.F("author")),
+                name='%(app_label)s_%(class)s_prevent_self_follow',
+                check=~models.Q(user=models.F('author')),
             ),
         ]
 
     def __str__(self):
-        return f"{self.user} подписан на {self.author}"
+        return f'{self.user} подписан на {self.author}'

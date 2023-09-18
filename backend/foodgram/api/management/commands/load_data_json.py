@@ -27,28 +27,28 @@ class Command(BaseCommand):
             print('Загрузка ингредиентов и тегов началась')
             counter = 0
             for ingredient in data:
-                Ingredient.objects.get_or_create(
+                ingredient_object, created = Ingredient.objects.get_or_create(
                     name=ingredient['name'],
                     measurement_unit=ingredient['measurement_unit']
                 )
-                if True:
+                if created:
                     counter += 1
             if counter == 0:
-                print('Список ингредиентов пуст')
+                print('Новых ингредиентов нет в списке')
             print(f'{counter} ингредиентов было загружено')
         with open(os.path.join(DATA_ROOT, options['tags']), 'r',
                   encoding='utf-8') as f:
             data = json.load(f)
             counter = 0
             for tag in data:
-                Tag.objects.get_or_create(
+                tag_object, created = Tag.objects.get_or_create(
                     name=tag['name'],
                     color=tag['color'],
                     slug=tag['slug']
                 )
-                if True:
+                if created:
                     counter += 1
             if counter == 0:
-                print('Список тегов пуст')
+                print('Новых тегов нет в списке')
             print(f'{counter} тегов было загружено')
         print('Загрузка ингредиентов и тегов завершена')

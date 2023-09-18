@@ -30,7 +30,9 @@ class CustomUserViewSet(UserViewSet):
             permission_classes=[IsAuthenticated])
     def subscribe(self, request, id):
         data = {'user': request.user.id, 'author': id}
-        serializer = PostFollowSerializer(data=data, context={'request': request})
+        serializer = PostFollowSerializer(
+            data=data, context={'request': request}
+        )
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)

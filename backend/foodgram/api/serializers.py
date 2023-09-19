@@ -26,7 +26,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         return (request
                 and request.user.is_authenticated
-                and obj.following.filter(author=obj.id).exists())
+                and request.user.following.filter(author=obj.id).exists())
 
 
 class GetFollowSerializer(CustomUserSerializer):
@@ -256,9 +256,7 @@ class PostRecipeSerializer(serializers.ModelSerializer):
         return super().update(instance, validated_data)
 
     def to_representation(self, instance):
-        return GetRecipeSerializer(instance, context={
-            'request': self.context.get('request')
-        }).data
+        return GetRecipeSerializer(instance, context=self.context).data
 
 
 class SmallRecipeSerializer(serializers.ModelSerializer):

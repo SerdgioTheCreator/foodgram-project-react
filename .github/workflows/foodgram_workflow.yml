@@ -23,7 +23,7 @@ jobs:
           python -m flake8 backend/foodgram/
 
   build_and_push_backend_to_docker_hub:
-    name: Push backend image to Docker Hub
+    name: push backend image to Docker Hub
     runs-on: ubuntu-latest
     needs: tests
     steps:
@@ -44,7 +44,7 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/foodgram-backend:latest
 
   build_and_push_frontend_to_docker_hub:
-    name: Pushing frontend image to Docker Hub
+    name: pushing frontend image to Docker Hub
     runs-on: ubuntu-latest
     needs: tests
     steps:
@@ -65,7 +65,7 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/foodgram-frontend:latest
 
   deploy:
-    name: Deploying on remote server
+    name: deploy
     runs-on: ubuntu-latest
     needs:
       - tests
@@ -102,7 +102,7 @@ jobs:
             sudo docker-compose up -d --build
 
   send_message:
-    name: Sending Telegram message
+    name: send message
     runs-on: ubuntu-latest
     needs: deploy
     steps:

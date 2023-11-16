@@ -71,6 +71,7 @@ jobs:
       - tests
       - build_and_push_backend_to_docker_hub
       - build_and_push_frontend_to_docker_hub
+    if: github.ref == 'refs/heads/master'
     steps:
       - name: Executing remote ssh commands to deploy
         uses: appleboy/ssh-action@master
@@ -80,10 +81,12 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
-            cd foodgram/infra/
-            sudo rm -f .env
+            sudo docker-compose stop
+            sudo docker-compose rm -f backend
+            sudo docker-compose rm -f frontend
+            sudo docker pull serdgiothecreator/foodgram-backend:latest
+            sudo docker pull serdgiothecreator/foodgram-frontend:latest
             sudo touch .env
-
             sudo echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
             sudo echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
             sudo echo DB_NAME=${{ secrets.DB_NAME }} >> .env
@@ -91,15 +94,7 @@ jobs:
             sudo echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
             sudo echo DB_HOST=${{ secrets.DB_HOST }} >> .env
             sudo echo DB_PORT=${{ secrets.DB_PORT }} >> .env
-
-            sudo docker-compose stop
-
-            sudo docker-compose rm backend
-            sudo docker-compose pull backend
-            sudo docker-compose rm frontend
-            sudo docker-compose pull frontend
-
-            sudo docker-compose up -d --build
+            sudo docker-compose up -d
 
   send_message:
     name: send message

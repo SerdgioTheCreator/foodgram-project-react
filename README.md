@@ -160,16 +160,14 @@ docker exec -it backend python3 manage.py createsuperuser
 
 - Ссылка на развернутый в облаке проект:
 
-```
-https://bestfoodgram.ddns.net
-```
+[https://bestfoodgram.ddns.net](https://bestfoodgram.ddns.net)
 
 ### Примеры API-запросов
 Подробные примеры запросов и коды ответов приведены в прилагаемой
 документации в формате ReDoc по адресу:
 
-```
-https://bestfoodgram.ddns.net/api/docs/
-```
+
+[https://bestfoodgram.ddns.net/api/docs/](https://bestfoodgram.ddns.net/api/docs/)
+
 
 ## Авторы: Коновалов Сергей, команда ЯндексПрактикум 

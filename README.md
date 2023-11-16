@@ -57,13 +57,13 @@ git clone https://github.com/SerdgioTheCreator/foodgram-project-react
 - Установить docker на сервер:
 
 ```
-apt install docker.io 
+sudo apt install docker.io 
 ```
 - Установить docker-compose на сервер:
 
 ```
-curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-chmod +x /usr/local/bin/docker-compose
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
 ```
 - Локально отредактировать файл infra/nginx.conf, обязательно в строке server_name вписать IP-адрес сервера
 - Создать дирректорию foodgram/ и скопировать в нее папку docs:
@@ -128,7 +128,7 @@ Workflow состоит из четырёх шагов:
 
 - собрать и запустить контейнеры на сервере:
 ```
-docker-compose up -d
+sudo docker-compose up -d
 ```
 
 - После успешной сборки выполнить следующие действия:
@@ -143,13 +143,13 @@ sudo docker exec backend python3 manage.py migrate
 Собрать статику:
 
 ```
-docker exec backend python3 manage.py collectstatic
+sudo docker exec backend python3 manage.py collectstatic
 ```
 
 Загрузить предустановленный список ингредиентов и тегов:
 
 ```
-docker exec backend python3 manage.py load_data_json
+sudo docker exec backend python3 manage.py load_data_json
 ```
 
 Создать суперюзера Django:

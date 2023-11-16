@@ -14,7 +14,6 @@ services:
   backend:
     build: ../backend/foodgram/
     container_name: backend
-#    image: foodgram-backend:latest
     restart: always
     volumes:
       - static_value:/app/static/
@@ -28,7 +27,6 @@ services:
   frontend:
     build: ../frontend/
     container_name: frontend
-#    image: foodgram-frontend:latest
     volumes:
       - ../frontend/:/app/result_build/
 

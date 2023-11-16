@@ -14,18 +14,18 @@
 [![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 
 ## Описание
->Foodgram - сервис для публикации рецептов. 
-> 
->Данный сервис поможет всегда иметь под рукой рецепты любимых блюд и формировать список покупок для упрощения похода в магазин за ингредиентами. 
-> Понятный и приятный глазу интерфейс позволит с легкостью погрузиться в мир кулинарии.
-> 
-> Авторизованные пользователи Foodgram смогут:
->- публиковать свои рецепты 
->- добавлять в избранное свои и чужие рецепты
->- фильтровать рецепты по тегам
->- добавлять рецепты в список покупок
->- скачивать список покупок в формате .pdf
->- подписываться на пользователей
+Foodgram - сервис для публикации рецептов. 
+ 
+Данный сервис поможет всегда иметь под рукой рецепты любимых блюд и формировать список покупок для упрощения похода в магазин за ингредиентами. 
+Понятный и приятный глазу интерфейс позволит с легкостью погрузиться в мир кулинарии.
+ 
+Авторизованные пользователи Foodgram смогут:
+- публиковать свои рецепты 
+- добавлять в избранное свои и чужие рецепты
+- фильтровать рецепты по тегам
+- добавлять рецепты в список покупок
+- скачивать список покупок в формате .pdf
+- подписываться на пользователей
 
 ## Подготовка и запуск проекта
 
@@ -33,14 +33,14 @@
 
 ```
 SECRET_KEY=<секретный ключ проекта Django>
-DB_ENGINE=<django.db.backends.postgresql>
-для PostgreSQL
+DB_ENGINE=<django.db.backends.postgresql> #для PostgreSQL
 или
-DB_ENGINE=<django.db.backends.sqlite3>
-для Sqlite3
+DB_ENGINE=<django.db.backends.sqlite3> #для Sqlite3
 ALLOWED_HOSTS=<строка с вашими хостами через запятую>
 DEBUG=<False>
-DB=<True> для PostgreSQL/<False> для Sqlite3
+DB=<True> #для PostgreSQL
+или
+DB=<False> #для Sqlite3
 DB_NAME=<наименование БД>
 POSTGRES_USER=<пользователь БД>
 POSTGRES_PASSWORD=<пароль для пользователя БД>
@@ -75,11 +75,13 @@ scp -r docs <username>@<host>:/home/<username>/foodgram/
 - Создать дирректорию infra/ внутри дирректории foodgram/
 - Скопировать файлы docker-compose.yml и nginx.conf из локальной директории infra/ в дирректорию infra/ на сервер:
 
-```
 на сервере:
+```
 cd foodgram
 mkdir infra
+```
 на локальной машине:
+```
 scp docker-compose.yml <username>@<host>:/home/<username>/foodgram/infra/docker-compose.yml
 scp nginx.conf <username>@<host>:/home/<username>/foodgram/infra/nginx.conf
 ```
@@ -93,14 +95,14 @@ nano .env
 
 - Для работы с Workflow добавить в Secrets GitHub переменные окружения:
 ```
-DB_ENGINE=django.db.backends.postgresql
-для PostgreSQL
+DB_ENGINE=django.db.backends.postgresql #для PostgreSQL
 или
-DB_ENGINE=django.db.backends.sqlite3
-для Sqlite3
+DB_ENGINE=django.db.backends.sqlite3 #для Sqlite3
 ALLOWED_HOSTS=<строка с вашими хостами через запятую>
 DEBUG=False
-DB=<True> для PostgreSQL/<False> для Sqlite3
+DB=True #для PostgreSQL
+или
+DB=False #для Sqlite3
 DB_NAME=<наименование БД>
 POSTGRES_USER=<пользователь БД>
 POSTGRES_PASSWORD=<пароль для пользователя БД>

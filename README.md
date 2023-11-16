@@ -63,6 +63,9 @@ sudo apt install docker.io
 
 ```
 sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+```
+
+```
 sudo chmod +x /usr/local/bin/docker-compose
 ```
 - Локально отредактировать файл infra/nginx.conf, обязательно в строке server_name вписать IP-адрес сервера
@@ -70,6 +73,9 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 ```
 mkdir foodgram
+```
+
+```
 scp -r docs <username>@<host>:/home/<username>/foodgram/
 ```
 - Создать дирректорию infra/ внутри дирректории foodgram/
@@ -78,11 +84,17 @@ scp -r docs <username>@<host>:/home/<username>/foodgram/
 на сервере:
 ```
 cd foodgram
+```
+
+```
 mkdir infra
 ```
 на локальной машине:
 ```
 scp docker-compose.yml <username>@<host>:/home/<username>/foodgram/infra/docker-compose.yml
+```
+
+```
 scp nginx.conf <username>@<host>:/home/<username>/foodgram/infra/nginx.conf
 ```
 
@@ -90,6 +102,9 @@ scp nginx.conf <username>@<host>:/home/<username>/foodgram/infra/nginx.conf
 
 ```
 touch .env
+```
+
+```
 nano .env
 ```
 

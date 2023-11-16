@@ -137,6 +137,9 @@ sudo docker-compose up -d
 
 ```
 sudo docker exec backend python3 manage.py makemigrations
+```
+
+```
 sudo docker exec backend python3 manage.py migrate
 ```
 
@@ -155,7 +158,7 @@ sudo docker exec backend python3 manage.py load_data_json
 Создать суперюзера Django:
 
 ```
-docker exec -it backend python3 manage.py createsuperuser
+sudo docker exec -it backend python3 manage.py createsuperuser
 ```
 
 - Ссылка на развернутый в облаке проект:

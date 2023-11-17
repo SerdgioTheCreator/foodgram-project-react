@@ -78,9 +78,6 @@ scp -r docs <username>@<host>:/home/<username>/foodgram/
 на сервере:
 ```
 cd foodgram
-```
-
-```
 mkdir infra
 ```
 на локальной машине:

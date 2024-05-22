@@ -170,4 +170,4 @@ sudo docker exec -it backend python3 manage.py createsuperuser
 [http://bestfoodgram.ddns.net/api/docs/](https://bestfoodgram.ddns.net/api/docs/)
 
 
-## Авторы: Коновалов Сергей, команда ЯндексПрактикум 
+## Авторы: Коновалов Сергей, команда ЯндексПрактикум.
